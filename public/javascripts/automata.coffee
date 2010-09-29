@@ -56,23 +56,27 @@ $ ->
     render: ->
       @ca.draw(@block_size * @gen, @block_size)
       @ca.populate()
+      @gen += 1
+      @roll()
 
-  init = ->
-    can = new Canvas 'automata'
-    can.dot 1, 1, 640, 480
-    ca = new CA can, 4, 320
+    roll: ->
+      if @gen * @block_size > @height
+        @gen = 0
 
-  draw_ca = (ca)->
-    ca.reset()
-    block = 2
-    for i in [0...240]
-      ca.draw(block * i, block)
-      ca.populate()
+    new_rules: ->
+      @ca.reset()
+
+
+  
+  r = new Renderer 640, 480, 2, 4
 
   $('body').bind 'keypress', (event) =>
-    console.log event.which
-  
-  $('#automata').bind 'mousedown', (event) =>
-    draw_ca(ca)
+    if event.which == 114
+      r.new_rules()
 
-  ca = init()
+  setInterval(
+  ->
+    r.render()
+  , 5)
+  
+

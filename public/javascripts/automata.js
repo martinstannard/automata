@@ -3,7 +3,7 @@
     return function(){ return func.apply(context, arguments); };
   };
   $(function() {
-    var CA, Canvas, Renderer, ca, draw_ca, init;
+    var CA, Canvas, Renderer, r;
     Canvas = function(id) {
       this.context = $("#" + id)[0].getContext('2d');
       return this;
@@ -82,33 +82,22 @@
     };
     Renderer.prototype.render = function() {
       this.ca.draw(this.block_size * this.gen, this.block_size);
-      return this.ca.populate();
+      this.ca.populate();
+      this.gen += 1;
+      return this.roll();
     };
-    init = function() {
-      var ca, can;
-      can = new Canvas('automata');
-      can.dot(1, 1, 640, 480);
-      return (ca = new CA(can, 4, 320));
+    Renderer.prototype.roll = function() {
+      return this.gen * this.block_size > this.height ? (this.gen = 0) : null;
     };
-    draw_ca = function(ca) {
-      var _a, block, i;
-      ca.reset();
-      block = 2;
-      _a = [];
-      for (i = 0; i < 240; i++) {
-        _a.push((function() {
-          ca.draw(block * i, block);
-          return ca.populate();
-        })());
-      }
-      return _a;
+    Renderer.prototype.new_rules = function() {
+      return this.ca.reset();
     };
+    r = new Renderer(640, 480, 2, 4);
     $('body').bind('keypress', __bind(function(event) {
-      return console.log(event.which);
+      return event.which === 114 ? r.new_rules() : null;
     }, this));
-    $('#automata').bind('mousedown', __bind(function(event) {
-      return draw_ca(ca);
-    }, this));
-    return (ca = init());
+    return setInterval(function() {
+      return r.render();
+    }, 5);
   });
 })();
