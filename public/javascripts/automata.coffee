@@ -67,16 +67,27 @@ $ ->
       @ca.reset()
 
 
-  
   r = new Renderer 640, 480, 2, 4
 
+  timer = null
+
   $('body').bind 'keypress', (event) =>
+    console.log event.which
     if event.which == 114
       r.new_rules()
+    if event.which == 103
+      timer = start()
+    if event.which == 115
+      stop()
 
-  setInterval(
-  ->
-    r.render()
-  , 5)
+  start = ->
+    setInterval(
+    ->
+      r.render()
+    , 5)
+
+  stop = ->
+    clearInterval timer
   
+  start()
 

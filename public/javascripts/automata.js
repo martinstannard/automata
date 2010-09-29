@@ -3,7 +3,7 @@
     return function(){ return func.apply(context, arguments); };
   };
   $(function() {
-    var CA, Canvas, Renderer, r;
+    var CA, Canvas, Renderer, r, start, stop, timer;
     Canvas = function(id) {
       this.context = $("#" + id)[0].getContext('2d');
       return this;
@@ -93,11 +93,25 @@
       return this.ca.reset();
     };
     r = new Renderer(640, 480, 2, 4);
+    timer = null;
     $('body').bind('keypress', __bind(function(event) {
-      return event.which === 114 ? r.new_rules() : null;
+      console.log(event.which);
+      if (event.which === 114) {
+        r.new_rules();
+      }
+      if (event.which === 103) {
+        timer = start();
+      }
+      return event.which === 115 ? stop() : null;
     }, this));
-    return setInterval(function() {
-      return r.render();
-    }, 5);
+    start = function() {
+      return setInterval(function() {
+        return r.render();
+      }, 5);
+    };
+    stop = function() {
+      return clearInterval(timer);
+    };
+    return start();
   });
 })();
