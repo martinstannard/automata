@@ -12,14 +12,14 @@ $ ->
 
   class CA
 
-    constructor: (@states, @width) ->
-      @rules = []
-      @colours = []
+    constructor: (@canvas, @states, @width) ->
       @pop1 = []
       @pop2 = []
       @.reset()
 
     reset: ->
+      @rules = []
+      @colours = []
       for i in [0...@width]
         @pop1[i] = @.randint(@states)
       for i in [0...@states * 3]
@@ -29,10 +29,10 @@ $ ->
     random_colour: ->
       "rgb(#{@.randint(255)},#{@.randint(255)},#{@.randint(255)})"
 
-    draw: (canvas, line, block) ->
+    draw: (line, block) ->
       for i in [0...@width]
-        canvas.colour @colours[@pop1[i]]
-        canvas.dot i * block, line, block, block
+        @canvas.colour @colours[@pop1[i]]
+        @canvas.dot i * block, line, block, block
 
     populate: ->
       for i in [0...@width]
@@ -46,19 +46,33 @@ $ ->
     modded: (n, mod) ->
       (n + mod) % mod
 
+  class Renderer
+    constructor: (@width, @height, @block_size, @states) ->
+      @canvas = new Canvas 'automata'
+      @canvas.dot 1, 1, @width, @height
+      @ca = new CA @canvas, @states, @width / @block_size
+      @gen = 0
 
+    render: ->
+      @ca.draw(@block_size * @gen, @block_size)
+      @ca.populate()
 
-  draw_ca = ->
+  init = ->
     can = new Canvas 'automata'
     can.dot 1, 1, 640, 480
-    $('#automata').bind 'mousedown', (event) =>
-      ca = new CA 4, 320
-      block = 2
-      for i in [0...240]
-        setTimeout(
-        ->
-          ca.draw(can, block * i, block)
-          ca.populate()
-        , 250)
+    ca = new CA can, 4, 320
 
-  draw_ca()
+  draw_ca = (ca)->
+    ca.reset()
+    block = 2
+    for i in [0...240]
+      ca.draw(block * i, block)
+      ca.populate()
+
+  $('body').bind 'keypress', (event) =>
+    console.log event.which
+  
+  $('#automata').bind 'mousedown', (event) =>
+    draw_ca(ca)
+
+  ca = init()
