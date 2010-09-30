@@ -20,25 +20,63 @@
       this.canvas = _a;
       this.pop1 = [];
       this.pop2 = [];
+      this.rules = [];
+      this.colours = [];
+      this.state = "random";
       this.reset();
       return this;
     };
     CA.prototype.reset = function() {
-      var _a, _b, i;
+      this.palette();
+      this.new_rules();
+      return this.seed();
+    };
+    CA.prototype.new_rules = function() {
+      var i;
       this.rules = [];
-      this.colours = [];
+      for (i = 0; (0 <= this.states * 5 ? i < this.states * 5 : i > this.states * 5); (0 <= this.states * 5 ? i += 1 : i -= 1)) {
+        this.rules.push(this.randint(this.states));
+      }
+      return this.seed();
+    };
+    CA.prototype.seed = function() {
+      var _a;
+      if ((_a = this.state) === "random") {
+        return this.random();
+      } else if (_a === "symmetrical") {
+        return this.symmetrical();
+      }
+    };
+    CA.prototype.random = function() {
+      var _a, _b, i;
+      this.state = "random";
+      _a = []; _b = this.width;
+      for (i = 0; (0 <= _b ? i < _b : i > _b); (0 <= _b ? i += 1 : i -= 1)) {
+        _a.push(this.pop1[i] = this.randint(this.states));
+      }
+      return _a;
+    };
+    CA.prototype.symmetrical = function() {
+      var _a, c, i, p;
+      this.state = "symmetrical";
       _a = this.width;
       for (i = 0; (0 <= _a ? i < _a : i > _a); (0 <= _a ? i += 1 : i -= 1)) {
-        this.pop1[i] = this.randint(this.states);
+        this.pop1[i] = 0;
       }
-      _b = [];
-      for (i = 0; (0 <= this.states * 3 ? i < this.states * 3 : i > this.states * 3); (0 <= this.states * 3 ? i += 1 : i -= 1)) {
-        _b.push((function() {
-          this.rules.push(this.randint(this.states));
-          return this.colours.push(this.random_colour());
-        }).call(this));
+      p = this.width / 2;
+      this.pop1[p] = this.randint(this.states);
+      c = this.randint(this.states);
+      this.pop1[p - 1] = c;
+      return (this.pop1[p + 1] = c);
+    };
+    CA.prototype.palette = function() {
+      var _a, i;
+      this.colours = [];
+      _a = [];
+      for (i = 0; (0 <= this.states * 5 ? i < this.states * 5 : i > this.states * 5); (0 <= this.states * 5 ? i += 1 : i -= 1)) {
+        _a.push(this.colours.push(this.random_colour()));
       }
-      return _b;
+      return _a;
     };
     CA.prototype.random_colour = function() {
       return "rgb(" + (this.randint(255)) + "," + (this.randint(255)) + "," + (this.randint(255)) + ")";
@@ -89,9 +127,6 @@
     Renderer.prototype.roll = function() {
       return this.gen * this.block_size > this.height ? (this.gen = 0) : null;
     };
-    Renderer.prototype.new_rules = function() {
-      return this.ca.reset();
-    };
     r = new Renderer(640, 480, 2, 4);
     timer = null;
     $('body').bind('keypress', __bind(function(event) {
@@ -103,6 +138,25 @@
         timer = start();
       }
       return event.which === 115 ? stop() : null;
+    }, this));
+    $('#reset').bind('click', __bind(function(event) {
+      return r.ca.reset();
+    }, this));
+    $('#rules').bind('click', __bind(function(event) {
+      return r.ca.new_rules();
+    }, this));
+    $('#palette').bind('click', __bind(function(event) {
+      return r.ca.palette();
+    }, this));
+    $('#random').bind('click', __bind(function(event) {
+      return r.ca.random();
+    }, this));
+    $('#symmetrical').bind('click', __bind(function(event) {
+      return r.ca.symmetrical();
+    }, this));
+    $('#states').bind('change', __bind(function(event) {
+      r.ca.states = $('#states option:selected')[0].text;
+      return r.ca.reset();
     }, this));
     start = function() {
       return setInterval(function() {

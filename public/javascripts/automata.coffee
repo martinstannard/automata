@@ -15,15 +15,46 @@ $ ->
     constructor: (@canvas, @states, @width) ->
       @pop1 = []
       @pop2 = []
-      @.reset()
-
-    reset: ->
       @rules = []
       @colours = []
-      for i in [0...@width]
-        @pop1[i] = @.randint(@states)
-      for i in [0...@states * 3]
+      @state = "random"
+      @reset()
+
+    reset: ->
+      @palette()
+      @new_rules()
+      @seed()
+
+    new_rules: ->
+      @rules = []
+      for i in [0...@states * 5]
         @rules.push @.randint(@states)
+      @seed()
+
+
+    seed: ->
+      switch @state
+        when "random" then @random()
+        when "symmetrical" then @symmetrical()
+
+    random: ->
+      @state = "random"
+      for i in [0...@width]
+        @pop1[i] = @randint(@states)
+
+    symmetrical: ->
+      @state = "symmetrical"
+      for i in [0...@width]
+        @pop1[i] = 0
+      p = @width/2
+      @pop1[p] = @randint(@states)
+      c = @randint(@states)
+      @pop1[p-1] = c
+      @pop1[p+1] = c
+
+    palette: ->
+      @colours = []
+      for i in [0...@states * 5]
         @colours.push @.random_colour()
 
     random_colour: ->
@@ -63,10 +94,6 @@ $ ->
       if @gen * @block_size > @height
         @gen = 0
 
-    new_rules: ->
-      @ca.reset()
-
-
   r = new Renderer 640, 480, 2, 4
 
   timer = null
@@ -79,6 +106,25 @@ $ ->
       timer = start()
     if event.which == 115
       stop()
+
+  $('#reset').bind 'click', (event) =>
+    r.ca.reset()
+
+  $('#rules').bind 'click', (event) =>
+    r.ca.new_rules()
+
+  $('#palette').bind 'click', (event) =>
+    r.ca.palette()
+
+  $('#random').bind 'click', (event) =>
+    r.ca.random()
+
+  $('#symmetrical').bind 'click', (event) =>
+    r.ca.symmetrical()
+
+  $('#states').bind 'change', (event) =>
+    r.ca.states = $('#states option:selected')[0].text
+    r.ca.reset()
 
   start = ->
     setInterval(
