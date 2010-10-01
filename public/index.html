@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-    <script type="text/javascript" src="javascripts/automata.js"></script>
+    <meta content="text/html; charset=utf-8" />
+    <link href="stylesheets/automata.css" media="all" rel="stylesheet" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script src="javascripts/automata.js"></script>
   </head>
   <body>
     <canvas id="automata" width="640" height="480"></canvas>
@@ -19,11 +21,19 @@
     </select>
     </p>
     <p>
-    <button type="button" id="reset">Reset</button>
-    <button type="button" id="rules">New Rules</button>
-    <button type="button" id="palette">New Palette</button>
+      <ol id="rules">
+      </ol>
+    </p>
+    <p>
+      <ol id="colours">
+      </ol>
+    </p>
+    <p>
     <button type="button" id="random">Random Seed</button>
     <button type="button" id="symmetrical">Symmetrical Seed</button>
+    <button type="button" id="new_rules">New Rules</button>
+    <button type="button" id="palette">New Palette</button>
+    <button type="button" id="reset">Reset All</button>
     </p>
   </body>
 </html>
