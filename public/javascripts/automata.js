@@ -215,7 +215,7 @@
     stop = function() {
       return clearInterval(timer);
     };
-    r = new Renderer(640, 480, 2, 4);
+    r = new Renderer(640, 480, 2, 2);
     timer = null;
     rules();
     colours();
