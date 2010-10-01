@@ -21,8 +21,19 @@ $ ->
       "rgb(#{@r},#{@g},#{@b})"
 
     to_hex: ->
-      decColor = @r + 256 * @g + 65536 * @b
-      "#" + decColor.toString 16
+      "#" + @num_to_hex(@r) + @num_to_hex(@g) + @num_to_hex(@b)
+
+    num_to_hex: (n) -> 
+      if (n == null) 
+        return "00"
+      n = parseInt n
+      if ( n == 0 || isNaN (n))
+        return "00"
+      n = Math.max 0, n
+      n = Math.min n, 255
+      n = Math.round n
+      "0123456789ABCDEF".charAt((n-n%16)/16) + "0123456789ABCDEF".charAt(n%16)
+      
 
   class CA
 
@@ -106,7 +117,6 @@ $ ->
 
 
   $('body').bind 'keypress', (event) =>
-    console.log event.which
     if event.which == 114
       r.new_rules()
     if event.which == 103
@@ -144,7 +154,7 @@ $ ->
     $('#colours').empty()
     i = 1
     for c in colours
-      $('#colours').append "<span class=\"colour\" id=\"colour_#{i}\"></span>"
+      $('#colours').append "<span class=\"colour\" id=\"colour_#{i}\">#{c.to_hex()}</span>"
       $("#colour_#{i}").css({ backgroundColor: c.to_hex()})
       i += 1
 

@@ -24,9 +24,20 @@
       return "rgb(" + (this.r) + "," + (this.g) + "," + (this.b) + ")";
     };
     Colour.prototype.to_hex = function() {
-      var decColor;
-      decColor = this.r + 256 * this.g + 65536 * this.b;
-      return "#" + decColor.toString(16);
+      return "#" + this.num_to_hex(this.r) + this.num_to_hex(this.g) + this.num_to_hex(this.b);
+    };
+    Colour.prototype.num_to_hex = function(n) {
+      if (n === null) {
+        return "00";
+      }
+      n = parseInt(n);
+      if (n === 0 || isNaN(n)) {
+        return "00";
+      }
+      n = Math.max(0, n);
+      n = Math.min(n, 255);
+      n = Math.round(n);
+      return "0123456789ABCDEF".charAt((n - n % 16) / 16) + "0123456789ABCDEF".charAt(n % 16);
     };
     CA = function(_a, _b, _c) {
       this.width = _c;
@@ -140,7 +151,6 @@
     };
     $('body').bind('keypress', __bind(function(event) {
       var timer;
-      console.log(event.which);
       if (event.which === 114) {
         r.new_rules();
       }
@@ -183,7 +193,7 @@
       for (_b = 0, _d = _c.length; _b < _d; _b++) {
         c = _c[_b];
         _a.push((function() {
-          $('#colours').append("<span class=\"colour\" id=\"colour_" + (i) + "\"></span>");
+          $('#colours').append("<span class=\"colour\" id=\"colour_" + (i) + "\">" + (c.to_hex()) + "</span>");
           $("#colour_" + (i)).css({
             backgroundColor: c.to_hex()
           });
