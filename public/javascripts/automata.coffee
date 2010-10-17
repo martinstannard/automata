@@ -154,7 +154,7 @@ $ ->
     $('#colours').empty()
     i = 1
     for c in colours
-      $('#colours').append "<span class=\"colour\" id=\"colour_#{i}\">#{c.to_hex()}</span>"
+      $('#colours').append "<span class=\"colour\" id=\"colour_#{i}\"></span>"
       $("#colour_#{i}").css({ backgroundColor: c.to_hex()})
       i += 1
 
@@ -163,7 +163,7 @@ $ ->
     $('#rules').empty()
     i = 1
     for rule in rules
-      $('#rules').append "<span class=\"colour\" id=\"rule_#{i}\">#{rule}</span>"
+      $('#rules').append "<span class=\"rules\" id=\"rule_#{i}\">#{rule}</span>"
       i += 1
 
   start = ->

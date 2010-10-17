@@ -193,7 +193,7 @@
       for (_b = 0, _d = _c.length; _b < _d; _b++) {
         c = _c[_b];
         _a.push((function() {
-          $('#colours').append("<span class=\"colour\" id=\"colour_" + (i) + "\">" + (c.to_hex()) + "</span>");
+          $('#colours').append("<span class=\"colour\" id=\"colour_" + (i) + "\"></span>");
           $("#colour_" + (i)).css({
             backgroundColor: c.to_hex()
           });
@@ -211,7 +211,7 @@
       for (_b = 0, _d = _c.length; _b < _d; _b++) {
         rule = _c[_b];
         _a.push((function() {
-          $('#rules').append("<span class=\"colour\" id=\"rule_" + (i) + "\">" + (rule) + "</span>");
+          $('#rules').append("<span class=\"rules\" id=\"rule_" + (i) + "\">" + (rule) + "</span>");
           return i += 1;
         })());
       }
