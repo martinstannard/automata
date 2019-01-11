@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" media="all" href=""/>
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, maximum-scale=1.0"/>
+    <link href="stylesheets/automata.css" media="all" rel="stylesheet" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script src="javascripts/automata.js"></script>
+  </head>
+
+  <body>
+
+    <body>
+      <canvas id="automata" width="640" height="480"></canvas>
+      <div class="menu">
+        <h2>Rules</h2>
+        <p>
+        <ol id="rules">
+        </ol>
+        </p>
+        <p>
+        States:
+        <select id="states">
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+        </select>
+        </p>
+        <button type="button" id="new_rules" class="button orange">New Rules</button>
+      </div>
+      <div class="menu">
+        <h2>Palette</h2>
+        <p>
+        <ol id="colours">
+        </ol>
+        <button type="button" id="palette" class="button orange">New Palette</button>
+        </p>
+      </div>
+      <div class="menu">
+        <h2>Seeds</h2>
+      <button type="button" id="random" class="button orange">Random Seed</button>
+      <button type="button" id="symmetrical" class="button orange">Symmetrical Seed</button>
+      <button type="button" id="reset" class="button orange">Reset All</button>
+      </div>
+    </body>
+  </body>
+
+</html>
+
